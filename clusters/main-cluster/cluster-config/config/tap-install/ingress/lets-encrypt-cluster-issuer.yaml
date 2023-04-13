@@ -1,0 +1,30 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-contour-cluster-issuer
+  namespace: tanzu-system-ingress
+  annotations:
+    kapp.k14s.io/change-rule.0: "upsert after upserting contour"
+    kapp.k14s.io/change-rule.1: "upsert after upserting pkgi"
+    kapp.k14s.io/change-rule.2: "delete before deleting pkgi"
+spec:
+  acme:
+    email: tsalm@vmware.com
+    privateKeySecretRef:
+      name: acme-account-key
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+      - dns01:
+          route53:
+            region: eu-central-1
+            hostedZoneID: Z04147751VKC48IKUQS06
+            role: arn:aws:iam::377668981663:role/EmeaE2EDemoHostedZoneChanger
+            accessKeyIDSecretRef:
+              name: prod-route53-credentials-secret
+              key: access-key-id
+            secretAccessKeySecretRef:
+              name: prod-route53-credentials-secret
+              key: secret-access-key
+

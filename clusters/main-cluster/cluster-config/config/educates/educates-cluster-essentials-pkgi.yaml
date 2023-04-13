@@ -1,0 +1,16 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: educates-cluster-essentials
+  namespace: educates-package
+spec:
+  packageRef:
+    refName: cluster-essentials.educates.dev
+    versionSelection:
+      constraints: #@ data.values.educates.version.package_repo_bundle_tag
+  serviceAccountName: educates-installer-sa
+  values:
+  - secretRef:
+      name: educates-cluster-essentials-values

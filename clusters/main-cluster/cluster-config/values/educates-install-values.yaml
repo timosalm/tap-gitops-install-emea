@@ -1,0 +1,25 @@
+educates:
+  package_repository:
+    oci_repository: ghcr.io/vmware-tanzu-labs/educates-packages
+  version:
+    package_repo_bundle_tag: "2.6.8"
+  educates_cluster_essentials:
+    clusterPackages:
+      contour:
+        enabled: false
+        settings: {}
+      kyverno:
+        enabled: true
+        settings: {}
+    clusterInfrastructure:
+      provider: ""
+  educates_training_platform:
+    clusterIngress:
+      domain: "main.emea.end2end.link"
+      tlsCertificateRef:
+        namespace: "tanzu-system-ingress"
+        name: "contour-tls-delegation-cert"
+    clusterSecurity:
+      policyEngine: "kyverno"
+    workshopSecurity:
+      rulesEngine: "kyverno"

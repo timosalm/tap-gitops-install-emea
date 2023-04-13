@@ -1,0 +1,13 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageRepository
+metadata:
+  name: educates
+  namespace: educates-package
+  annotations:
+    kapp.k14s.io/change-group: pkgr-educates-package
+spec:
+  fetch:
+    imgpkgBundle:
+      image: #@ "{}:{}".format(data.values.educates.package_repository.oci_repository, data.values.educates.version.package_repo_bundle_tag)

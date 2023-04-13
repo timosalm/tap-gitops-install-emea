@@ -1,0 +1,20 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: harbor
+  namespace: tkg-system
+  annotations:
+    ext.packaging.carvel.dev/ytt-paths-from-secret-name.0: ingress-secret-name-overlay
+spec:
+  packageRef:
+    refName: harbor.tanzu.vmware.com
+    versionSelection:
+      constraints: #@ data.values.tap_std.version.harbor_package_version
+  serviceAccountName: tanzu-std-installer-sa
+  values:
+  - secretRef:
+      name: harbor-values
+  - secretRef:
+      name: harbor-sensitive-values

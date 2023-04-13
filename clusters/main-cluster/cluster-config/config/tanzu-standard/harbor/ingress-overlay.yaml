@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ingress-secret-name-overlay
+  namespace: tkg-system
+stringData:
+  ingress-secret-name-overlay.yml: |
+    #@ load("@ytt:overlay", "overlay")
+    #@overlay/match by=overlay.subset({"kind":"HTTPProxy"}),expects="1+"
+    ---
+    metadata:
+      #@overlay/match missing_ok=True
+      annotations:
+        projectcontour.io/response-timeout: "900s"
+    spec:
+      virtualhost:
+        tls:
+          #@overlay/match missing_ok=True
+          secretName: tanzu-system-ingress/contour-tls-delegation-cert

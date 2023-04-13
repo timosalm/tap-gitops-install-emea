@@ -1,0 +1,82 @@
+tap_install:
+  values:
+    ceip_policy_disclosed: true
+    profile: full
+    shared:
+      kubernetes_version: 1.25.11
+      ingress_domain: main.emea.end2end.link
+      ingress_issuer: letsencrypt-contour-cluster-issuer
+      image_registry:
+        project_path: harbor.main.emea.end2end.link/tap
+    buildservice:
+      kp_default_repository: 377668981663.dkr.ecr.eu-central-1.amazonaws.com/tap-build-service
+      kp_default_repository_aws_iam_role_arn: arn:aws:iam::377668981663:role/tap-build-service
+    ootb_templates:
+      iaas_auth: true
+    tap_gui:
+      app_config:
+        auth:
+          allowGuestAccess: true 
+        integrations:
+          github: [] # External secret
+      catalog:
+        locations:
+        - type: url
+          target: https://github.com/timosalm/spring-cloud-demo-tap/blob/main/tap/catalog/catalog-info.yaml
+        - type: url
+          target: https://github.com/timosalm/emoji-inclusion/blob/main/catalog/catalog-info.yaml
+      techdocs:
+        builder: external
+        publisher:
+          type: awsS3
+          awsS3:
+            bucketName: tap-tech-docs
+            credentials: {} # External secret
+            region: eu-central-1
+            s3ForcePathStyle: false
+    metadata_store:
+      ns_for_export_app_cert: "*"
+    scanning:
+      metadataStore:
+        url: ""
+    accelerator:
+      git_credentials: {} # External secret
+      samples:
+        include: false
+      managed_resources:
+        enable: true
+        git:
+          url: https://github.com/timosalm/tap-accelerators
+          sub_path: config
+    cnrs:
+      ingress_issuer: ""
+      default_tls_secret: tanzu-system-ingress/contour-tls-delegation-cert
+      domain_template: '{{.Name}}-{{.Namespace}}.{{.Domain}}'
+      ingress:
+        internal:
+          namespace: tanzu-system-ingress-internal
+    api_portal:
+      apiPortalServer:
+        sourceUrls: https://petstore.swagger.io/v2/swagger.json,https://petstore3.swagger.io/api/v3/openapi.json,https://gateway-dev-space.emea.main.end2end.link/v3/api-docs
+    appsso:
+      domain_template: '{{.Name}}-{{.Namespace}}.{{.Domain}}'
+    namespace_provisioner:
+      additional_sources:
+      - git:
+          ref: origin/main
+          subPath: overlays
+          url: https://github.com/timosalm/tap-gitops-namespace-provisioner.git
+        path: _ytt_lib/customize
+      - git:
+          ref: origin/main
+          subPath: additional-resources
+          url: https://github.com/timosalm/tap-gitops-namespace-provisioner.git
+        path: _ytt_lib/additional-resources
+    tekton_pipelines:
+      feature_flags:
+        enable_api_fields: alpha
+    excluded_packages:
+    - policy.apps.tanzu.vmware.com
+    - workshops.learningcenter.tanzu.vmware.com
+    - ootb-supply-chain-basic.tanzu.vmware.com
+    - learningcenter.tanzu.vmware.com
