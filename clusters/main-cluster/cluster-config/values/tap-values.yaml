@@ -52,9 +52,6 @@ tap_install:
       ingress_issuer: ""
       default_tls_secret: tanzu-system-ingress/contour-tls-delegation-cert
       domain_template: '{{.Name}}-{{.Namespace}}.{{.Domain}}'
-      ingress:
-        internal:
-          namespace: tanzu-system-ingress-internal
     api_portal:
       apiPortalServer:
         sourceUrls: https://petstore.swagger.io/v2/swagger.json,https://petstore3.swagger.io/api/v3/openapi.json,https://gateway-dev-space.emea.main.end2end.link/v3/api-docs
