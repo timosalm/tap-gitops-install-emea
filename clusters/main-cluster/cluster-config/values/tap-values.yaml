@@ -64,11 +64,6 @@ tap_install:
       additional_sources:
       - git:
           ref: origin/main
-          subPath: overlays
-          url: https://github.com/timosalm/tap-gitops-namespace-provisioner.git
-        path: _ytt_lib/customize
-      - git:
-          ref: origin/main
           subPath: additional-resources
           url: https://github.com/timosalm/tap-gitops-namespace-provisioner.git
         path: _ytt_lib/additional-resources
