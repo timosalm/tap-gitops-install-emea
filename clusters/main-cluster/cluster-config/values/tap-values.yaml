@@ -19,21 +19,21 @@ tap_install:
           allowGuestAccess: true 
         integrations:
           github: [] # External secret
-      catalog:
-        locations:
-        - type: url
-          target: https://github.com/timosalm/spring-cloud-demo-tap/blob/main/tap/catalog/catalog-info.yaml
-        - type: url
-          target: https://github.com/timosalm/emoji-inclusion/blob/main/catalog/catalog-info.yaml
-      techdocs:
-        builder: external
-        publisher:
-          type: awsS3
-          awsS3:
-            bucketName: tap-tech-docs
-            credentials: {} # External secret
-            region: eu-central-1
-            s3ForcePathStyle: false
+        catalog:
+          locations:
+          - type: url
+            target: https://github.com/timosalm/spring-cloud-demo-tap/blob/main/tap/catalog/catalog-info.yaml
+          - type: url
+            target: https://github.com/timosalm/emoji-inclusion/blob/main/catalog/catalog-info.yaml
+        techdocs:
+          builder: external
+          publisher:
+            type: awsS3
+            awsS3:
+              bucketName: tap-tech-docs
+              credentials: {} # External secret
+              region: eu-central-1
+              s3ForcePathStyle: false
     metadata_store:
       ns_for_export_app_cert: "*"
     scanning:
