@@ -85,6 +85,8 @@ tap_install:
           requests: 
             cpu: 3000m
             memory: 10Gi
+    grype:
+      targetImagePullSecret: registries-credentials
     excluded_packages:
     - policy.apps.tanzu.vmware.com
     - workshops.learningcenter.tanzu.vmware.com
