@@ -39,6 +39,13 @@ rules:
   verbs:
   - '*'
 - apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - list
+  - get
+- apiGroups:
   - tekton.dev
   resources:
   - pipelines
