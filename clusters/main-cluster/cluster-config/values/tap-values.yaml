@@ -11,11 +11,6 @@ tap_install:
     buildservice:
       kp_default_repository: 377668981663.dkr.ecr.eu-central-1.amazonaws.com/tap-build-service
       kp_default_repository_aws_iam_role_arn: arn:aws:iam::377668981663:role/tap-build-service
-    supply_chain: testing_scanning
-    ootb_supply_chain_testing_scanning:
-      registry:
-        server:  harbor.main.emea.end2end.link
-        repository: tap
     ootb_templates:
       iaas_auth: true
     tap_gui:
