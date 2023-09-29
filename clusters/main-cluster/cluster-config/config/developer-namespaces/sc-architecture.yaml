@@ -19,7 +19,7 @@ spec:
   serviceAccountName: default
   fetch:
     - git:
-        url: #@ data.values.developer-namespaces.git.url
+        url: #@ data.values.developer_namespaces.git.url
         ref: sc-architecture
   template:
   - ytt: {}
