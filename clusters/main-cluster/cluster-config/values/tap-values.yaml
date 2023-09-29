@@ -11,6 +11,7 @@ tap_install:
     buildservice:
       kp_default_repository: 377668981663.dkr.ecr.eu-central-1.amazonaws.com/tap-build-service
       kp_default_repository_aws_iam_role_arn: arn:aws:iam::377668981663:role/tap-build-service
+    supply_chain: testing_scanning  # Required for namespace provisioner to apply scan templates
     ootb_templates:
       iaas_auth: true
     tap_gui:
@@ -86,4 +87,5 @@ tap_install:
     - policy.apps.tanzu.vmware.com
     - workshops.learningcenter.tanzu.vmware.com
     - ootb-supply-chain-basic.tanzu.vmware.com
+    - ootb-supply-chain-testing-scanning.tanzu.vmware.com
     - learningcenter.tanzu.vmware.com
