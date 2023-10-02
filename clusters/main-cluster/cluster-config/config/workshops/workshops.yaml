@@ -24,7 +24,7 @@ spec:
   - ytt: 
       valuesFrom:
       - configMapRef:
-        name: workshops-values
+          name: workshops-values
   deploy:
   - kapp: {}
 ---
