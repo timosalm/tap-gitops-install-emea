@@ -1,0 +1,10 @@
+workshops:
+  git:
+    url: https://github.com/timosalm/tap-gitops-workshops
+    ref: educates
+    sub_path:
+  values:
+    tap:
+      ingress_domain: main.emea.end2end.link
+    
+  

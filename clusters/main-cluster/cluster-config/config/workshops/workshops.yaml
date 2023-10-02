@@ -1,0 +1,57 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: workshops
+---
+apiVersion: kappctrl.k14s.io/v1alpha1
+kind: App
+metadata:
+  name: workshops
+  namespace: workshops
+  annotations:
+    kapp.k14s.io/change-rule.0: "upsert after upserting pkgi"
+    kapp.k14s.io/change-rule.1: "delete before deleting pkgi"
+spec:
+  serviceAccountName: default
+  fetch:
+    - git:
+        url: #@ data.values.workshops.git.url
+        ref: #@ data.values.workshops.git.ref
+        subPath: #@ data.values.workshops.git.sub_path
+  template:
+  - ytt: 
+      valuesFrom:
+      #- secretRef:
+      #    name: secret-name
+      - configMapRef:
+        name: workshops-values
+  deploy:
+  - kapp: {}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: workshops-syncer
+rules:
+- apiGroups:
+  - training.educates.dev
+  resources:
+  - workshops
+  - trainingportals
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: workshops-syncer-default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: workshops-syncer
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: workshops

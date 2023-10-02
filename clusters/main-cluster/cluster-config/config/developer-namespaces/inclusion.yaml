@@ -1,0 +1,74 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: inclusion
+  labels:
+    apps.tanzu.vmware.com/tap-ns: ""
+---
+apiVersion: kappctrl.k14s.io/v1alpha1
+kind: App
+metadata:
+  name: workloads
+  namespace: inclusion
+  annotations:
+    kapp.k14s.io/change-rule.0: "upsert after upserting pkgi"
+    kapp.k14s.io/change-rule.1: "delete before deleting pkgi"
+spec:
+  serviceAccountName: default
+  fetch:
+    - git:
+        url: #@ data.values.developer_namespaces.git.url
+        ref: inclusion
+  template:
+  - ytt: {}
+  deploy:
+  - kapp: {}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: workloads-syncer
+  namespace: inclusion
+rules:
+- apiGroups:
+  - carto.run
+  resources:
+  - workloads
+  verbs:
+  - '*'
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - list
+  - get
+- apiGroups:
+  - tekton.dev
+  resources:
+  - pipelines
+  verbs:
+  - '*'
+- apiGroups:
+  - services.apps.tanzu.vmware.com
+  resources:
+  - classclaims
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: workloads-syncer-default
+  namespace: inclusion
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: workloads-syncer
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: inclusion
+
