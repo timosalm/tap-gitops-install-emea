@@ -23,8 +23,6 @@ spec:
   template:
   - ytt: 
       valuesFrom:
-      #- secretRef:
-      #    name: secret-name
       - configMapRef:
         name: workshops-values
   deploy:
