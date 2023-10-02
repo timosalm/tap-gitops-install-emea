@@ -57,3 +57,7 @@ tap_install:
         harbor_sensitive_values:
           #@schema/type any=True
           sensitive_harbor_values_yaml: {}
+        workshops_sensitive_values:
+          #@schema/type any=True
+          sensitive_workshops_values_yaml: {}
+
