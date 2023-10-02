@@ -6,6 +6,7 @@ metadata:
   name: harbor
   namespace: tkg-system
   annotations:
+    kapp.k14s.io/change-rule.0: "upsert after upserting eso/harbor-sensitive-values"
     ext.packaging.carvel.dev/ytt-paths-from-secret-name.0: ingress-secret-name-overlay
 spec:
   packageRef:

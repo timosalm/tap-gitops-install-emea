@@ -1,0 +1,18 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: workshops-sensitive-values
+  namespace: workshops
+  annotations:
+    kapp.k14s.io/change-group: eso/workshops-sensitive-values
+    kapp.k14s.io/change-rule.0: "upsert after upserting eso/secretstore"
+spec:
+  secretStoreRef:
+    name: workshops-secrets
+    kind: SecretStore
+  refreshInterval: "1m"
+  data:
+    - secretKey: sensitive-workshops-values.yaml
+      remoteRef: #@ data.values.tap_install.secrets.eso.remote_refs.workshops_sensitive_values.sensitive_workshops_values_yaml
