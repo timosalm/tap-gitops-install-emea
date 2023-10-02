@@ -6,5 +6,6 @@ workshops:
   values:
     tap:
       ingress_domain: main.emea.end2end.link
+      ingress_wildcard_cert: tanzu-system-ingress/contour-tls-delegation-cert
     
   
