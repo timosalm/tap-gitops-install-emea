@@ -7,5 +7,14 @@ workshops:
     tap:
       ingress_domain: main.emea.end2end.link
       ingress_wildcard_cert: tanzu-system-ingress/contour-tls-delegation-cert
-    
-  
+    container_registry:
+      hostname: harbor.main.emea.end2end.link
+      repository: tap-workshop-examples
+      password: "" # External secret
+    training_portal:
+      adminPassword: "" # External secret
+      robotPassword: "" # External secret
+      robotClientId: "" # External secret
+      robotClientSecret: "" # External secret
+    metadatastore:
+      accesstoken: "" # External secret
