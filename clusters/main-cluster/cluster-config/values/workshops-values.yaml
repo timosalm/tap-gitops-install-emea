@@ -11,6 +11,7 @@ workshops:
     container_registry:
       hostname: harbor.main.emea.end2end.link
       repository: tap-workshop-examples
+      username: "" # External secret
       password: "" # External secret
     training_portal:
       adminPassword: "" # External secret
