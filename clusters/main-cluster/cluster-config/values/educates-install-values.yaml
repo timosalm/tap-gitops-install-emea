@@ -2,7 +2,7 @@ educates:
   package_repository:
     oci_repository: ghcr.io/vmware-tanzu-labs/educates-packages
   version:
-    package_repo_bundle_tag: "2.6.8"
+    package_repo_bundle_tag: "2.6.15"
   educates_cluster_essentials:
     clusterPackages:
       contour:
