@@ -28,3 +28,6 @@ tap_install:
   #@schema/desc "Non-sensitive portion of the Tanzu Application Platform configuration values."
   #@schema/type any=True
   values: {}
+
+  #@schema/type any=True
+  packages: {}
