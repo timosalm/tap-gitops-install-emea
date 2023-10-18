@@ -33,6 +33,11 @@ spec:
     name: image_scanning_workspace_size
   - name: image_scanning_active_keychains
     value: []
+  - name: registry
+    default:
+      ca_cert_data: ""
+      repository: #@ data.values.supply_chains.shared.registry.repository
+      server: #@ data.values.supply_chains.shared.registry.server
   resources:
   - name: source-provider
     params:
@@ -64,11 +69,6 @@ spec:
     params:
     - default: default
       name: serviceAccount
-    - name: registry
-      value:
-        ca_cert_data: ""
-        repository: #@ data.values.supply_chains.shared.registry.repository
-        server: #@ data.values.supply_chains.shared.registry.server
     - default: default
       name: clusterBuilder
     - default: ./Dockerfile
@@ -102,11 +102,6 @@ spec:
       name: scanning_image_policy
     - default: private-image-scan-template
       name: scanning_image_template
-    - name: registry
-      value:
-        ca_cert_data: ""
-        repository: #@ data.values.supply_chains.shared.registry.repository
-        server: #@ data.values.supply_chains.shared.registry.server
     templateRef:
       kind: ClusterImageTemplate
       name: image-scanner-template
@@ -160,21 +155,11 @@ spec:
     params:
     - default: default
       name: serviceAccount
-    - name: registry
-      value:
-        ca_cert_data: ""
-        repository: #@ data.values.supply_chains.shared.registry.repository
-        server: #@ data.values.supply_chains.shared.registry.server
     templateRef:
       kind: ClusterTemplate
       name: config-writer-template
   - name: deliverable
     params:
-    - name: registry
-      value:
-        ca_cert_data: ""
-        repository: #@ data.values.supply_chains.shared.registry.repository
-        server: #@ data.values.supply_chains.shared.registry.server
     - default: go-git
       name: gitImplementation
     templateRef:
