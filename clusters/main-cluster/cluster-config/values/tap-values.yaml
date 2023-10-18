@@ -68,8 +68,7 @@ tap_install:
     local_source_proxy:
       repository: harbor.main.emea.end2end.link/tap/local-source
       push_secret:
-        name: registries-credentials
-        namespace: tap-install
+        name: lsp-install-credentials
     tekton_pipelines:
       feature_flags:
         enable_api_fields: alpha
