@@ -44,11 +44,11 @@ tap_install:
       git_credentials: {} # External secret
       samples:
         include: false
-      managed_resources:
-        enable: true
-        git:
-          url: https://github.com/timosalm/tap-accelerators
-          sub_path: config
+      # managed_resources:
+      #  enable: true
+      #  git:
+      #    url: https://github.com/timosalm/tap-accelerators
+      #    sub_path: config
     cnrs:
       ingress_issuer: ""
       default_tls_secret: tanzu-system-ingress/contour-tls-delegation-cert
