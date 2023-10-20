@@ -20,11 +20,6 @@ spec:
     name: gitops_ssh_secret
   - default: ""
     name: gitops_commit_branch
-  - name: registry
-    default:
-      ca_cert_data: ""
-      repository: #@ data.values.supply_chains.shared.registry.repository
-      server: #@ data.values.supply_chains.shared.registry.server
   - name: image_scanning_service_account_publisher
     value: default
   - default: default
