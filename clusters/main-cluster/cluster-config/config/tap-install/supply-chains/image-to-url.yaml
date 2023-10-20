@@ -55,12 +55,12 @@ spec:
         selector:
           matchExpressions:
             - key: apps.tanzu.vmware.com/no-scan
-              operator: Exists
+              operator: DoesNotExist
       - passThrough: image
         selector:
           matchExpressions:
             - key: apps.tanzu.vmware.com/no-scan
-              operator: DoesNotExist
+              operator: Exists
   - images:
     - name: image
       resource: image-scanner
