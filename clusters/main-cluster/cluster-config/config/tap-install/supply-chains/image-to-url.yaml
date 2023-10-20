@@ -55,7 +55,17 @@ spec:
         server: #@ data.values.supply_chains.shared.registry.server
     templateRef:
       kind: ClusterImageTemplate
-      name: image-scanner-template
+      options:
+      - name: image-scanner-template
+        selector:
+          matchExpressions:
+            - key: apps.tanzu.vmware.com/no-scan
+              operator: Exists
+      - passThrough: image
+        selector:
+          matchExpressions:
+            - key: apps.tanzu.vmware.com/no-scan
+              operator: DoesNotExist
   - images:
     - name: image
       resource: image-scanner
