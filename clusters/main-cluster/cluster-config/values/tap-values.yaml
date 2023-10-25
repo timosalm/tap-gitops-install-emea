@@ -31,8 +31,9 @@ tap_install:
           publisher:
             type: awsS3
             awsS3:
-              bucketName: tap-tech-docs
-              credentials: {} # External secret
+              bucketName: emea-tap-tech-docs
+              credentials:
+                roleArn: arn:aws:iam::377668981663:role/emea-tap-tech-docs-reader
               region: eu-central-1
               s3ForcePathStyle: false
     metadata_store:
