@@ -21,10 +21,4 @@ spec:
             region: eu-central-1
             hostedZoneID: Z04147751VKC48IKUQS06
             role: arn:aws:iam::377668981663:role/EmeaE2EDemoHostedZoneChanger
-            accessKeyIDSecretRef:
-              name: prod-route53-credentials-secret
-              key: access-key-id
-            secretAccessKeySecretRef:
-              name: prod-route53-credentials-secret
-              key: secret-access-key
 
