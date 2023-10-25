@@ -44,8 +44,7 @@ rules:
   - configmaps
   - secrets
   verbs:
-  - list
-  - get
+  - '*'
 - apiGroups:
   - tekton.dev
   resources:
