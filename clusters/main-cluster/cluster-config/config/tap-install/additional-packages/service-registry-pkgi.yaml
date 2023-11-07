@@ -15,4 +15,4 @@ spec:
   packageRef:
     refName: service-registry.spring.apps.tanzu.vmware.com
     versionSelection:
-      constraints: #@ data.values.tap_install.packages.service-registry.version.package_version
+      constraints: #@ data.values.tap_install.packages.service_registry.version.package_version
