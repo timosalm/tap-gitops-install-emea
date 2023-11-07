@@ -1,33 +1,8 @@
-## TechDocs setup
+# Tanzu GitOps Reference Implementation
 
-Role name: emea-tap-tech-docs-reader
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "ReadTechDocs",
-            "Effect": "Allow",
-            "Action": [
-                "s3:ListBucket",
-                "s3:GetObject"
-            ],
-            "Resource": [
-                "arn:aws:s3:::emea-tap-tech-docs",
-                "arn:aws:s3:::emea-tap-tech-docs/*"
-            ]
-        }
-    ]
-}
+Use this archive contains an opinionated approach to implementing GitOps workflows on Kubernetes clusters.
 
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Principal": {
-                "AWS": "arn:aws:iam::377668981663:role/emea-tap-eks-worker-role"
-            },
-            "Action": "sts:AssumeRole"
-        }
-    ]
-}
+This reference implementation is pre-configured to install Tanzu Application Platform.
+
+For detailed documentation, refer to [VMware Tanzu Application Platform Product Documentation](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.7/tap/install-gitops-intro.html).
+

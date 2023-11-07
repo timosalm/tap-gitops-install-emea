@@ -38,9 +38,6 @@ tap_install:
               s3ForcePathStyle: false
     metadata_store:
       ns_for_export_app_cert: "*"
-    scanning:
-      metadataStore:
-        url: ""
     accelerator:
       git_credentials: {} # External secret
       samples:
