@@ -7,7 +7,10 @@ tap_install:
   packages:
     acs:
       version:
-        package_version: "2.1.0"
+        package_version: "2.2.0"
     scg:
       version:
-        package_version: "2.0.6"
+        package_version: "2.1.4"
+    service-registry:
+      version:
+        package_version: "1.2.0"
