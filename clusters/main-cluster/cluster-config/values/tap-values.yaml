@@ -18,6 +18,10 @@ tap_install:
       app_config:
         auth:
           allowGuestAccess: true 
+          environment: production
+          providers:
+            github:
+              production: {} # External secret
         integrations:
           github: [] # External secret
         catalog:
