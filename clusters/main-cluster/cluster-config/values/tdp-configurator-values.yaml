@@ -12,7 +12,7 @@ tdp_configurator:
       plugins:
         - name: '@timosalm/plugin-tech-insights-wrapper-backend'
           version: '1.0.0'
-  custom_image: harbor.main.emea.end2end.link/tap/tdp-configurator-tdp-configurator@sha256:472be411ef7b4fb023254baf6cbdfa8e8cd9ae914e3c34215f2e72253823337a
+  custom_image: harbor.main.emea.end2end.link/tap/tdp-configurator-tdp-configurator@sha256:2d73f2ea849ef59172ef06fd42e28c30f5ac7d04d82daa7132710239af176304
   overlay: |
     #@ load("@ytt:overlay", "overlay")
     #@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"name": "server", "namespace": "tap-gui"}}), expects="1+"
