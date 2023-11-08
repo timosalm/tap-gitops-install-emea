@@ -26,7 +26,7 @@ tdp_configurator:
           version: '0.0.2'
         - name: '@vmware-tanzu/tdp-plugin-backstage-sonarqube-backend'
           version: '0.0.3'
-  custom_image: harbor.main.emea.end2end.link/tap/tdp-configurator-tdp-configurator@sha256:4f59d3cab1e16c44a1b0596717532dfa9a310d1e4b82513986f60c3ea02cbaff
+  custom_image: harbor.main.emea.end2end.link/tap/tdp-configurator-tdp-configurator@sha256:ba637022dbb0b09ca4c4c8e7b0eb4e05fd9789676697ce8bc0995e10d84e6957
   overlay: |
     #@ load("@ytt:overlay", "overlay")
     #@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"name": "server", "namespace": "tap-gui"}}), expects="1+"
