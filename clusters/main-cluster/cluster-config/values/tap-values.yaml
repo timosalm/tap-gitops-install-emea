@@ -35,7 +35,6 @@ tap_install:
               credentials:
                 roleArn: arn:aws:iam::377668981663:role/emea-tap-tech-docs-reader
               region: eu-central-1
-              s3ForcePathStyle: false
     metadata_store:
       ns_for_export_app_cert: "*"
     accelerator:
