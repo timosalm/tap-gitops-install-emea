@@ -20,10 +20,10 @@ spec:
   build:
     env:
       - name: BP_NODE_RUN_SCRIPTS
-        value: 'set-tdp-config,portal:pack'
-      - name: TDP_CONFIG
-        value: /tmp/tdp-config.yaml
-      - name: TDP_CONFIG_STRING
+        value: 'set-tpb-config,portal:pack'
+      - name: TPB_CONFIG
+        value: /tmp/tpb-config.yaml
+      - name: TPB_CONFIG_STRING
         value: #@ base64.encode(data.values.tdp_configurator.config)
   source:
     image: #@ data.values.tdp_configurator.image
