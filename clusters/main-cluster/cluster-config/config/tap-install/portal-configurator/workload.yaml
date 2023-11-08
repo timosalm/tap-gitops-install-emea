@@ -11,11 +11,11 @@ metadata:
 apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
-name: tdp-configurator
-namespace: tdp-configurator
-labels:
-  apps.tanzu.vmware.com/workload-type: web
-  app.kubernetes.io/part-of: tdp-configurator
+  name: tdp-configurator
+  namespace: tdp-configurator
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: tdp-configurator
 spec:
   build:
     env:
