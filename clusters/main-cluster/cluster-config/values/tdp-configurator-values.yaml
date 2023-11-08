@@ -6,6 +6,8 @@ tdp_configurator:
       plugins:
         - name: '@timosalm/plugin-tech-insights-wrapper'
           version: '1.0.0'
+        - name: '@timosalm/tech-radar-wrapper'
+          version: '1.0.0'
     backend:
       plugins:
         - name: '@timosalm/plugin-tech-insights-wrapper-backend'
