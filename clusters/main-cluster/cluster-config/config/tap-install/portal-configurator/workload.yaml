@@ -1,0 +1,30 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:base64", "base64")
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tdp-configurator
+  labels:
+    apps.tanzu.vmware.com/tap-ns: ""
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+name: tdp-configurator
+namespace: tdp-configurator
+labels:
+  apps.tanzu.vmware.com/workload-type: web
+  app.kubernetes.io/part-of: tdp-configurator
+spec:
+  build:
+    env:
+      - name: BP_NODE_RUN_SCRIPTS
+        value: 'set-tdp-config,portal:pack'
+      - name: TDP_CONFIG
+        value: /tmp/tdp-config.yaml
+      - name: TDP_CONFIG_STRING
+        value: #@ base64.encode(data.values.tdp_configurator.config)
+  source:
+    image: #@ data.values.tdp_configurator.image
+    subPath: builder
