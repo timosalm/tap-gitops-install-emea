@@ -20,8 +20,6 @@ tdp_configurator:
           version: '0.0.2'
         - name: '@vmware-tanzu/tdp-plugin-prometheus'
           version: '0.0.2'
-        - name: '@vmware-tanzu/tdp-plugin-backstage-grafana'
-          version: '0.0.2'
     backend:
       plugins:
         - name: '@vmware-tanzu/tdp-plugin-techinsights-backend'
