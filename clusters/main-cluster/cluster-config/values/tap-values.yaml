@@ -94,3 +94,7 @@ tap_install:
     - ootb-supply-chain-basic.tanzu.vmware.com
     - ootb-supply-chain-testing-scanning.tanzu.vmware.com
     - learningcenter.tanzu.vmware.com
+    package_overlays:
+    - name: tap-gui
+      secrets:
+      - name: tdp-app-image-overlay-secret

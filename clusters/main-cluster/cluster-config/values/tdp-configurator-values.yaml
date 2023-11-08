@@ -11,3 +11,23 @@ tdp_configurator:
         - name: "@vmware-tanzu/tdp-plugin-techinsights-backend"
           version: "0.0.2"
   custom_image: harbor.main.emea.end2end.link/tap/tdp-configurator-tdp-configurator@sha256:c304d5547a589ee74ad564dfca4ae4fe71527f61de1d36c9ccd71da6f74be892
+  overlay: |
+    #@ load("@ytt:overlay", "overlay")
+    #@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"name": "server", "namespace": "tap-gui"}}), expects="1+"
+    ---
+    spec:
+      template:
+        spec:
+          containers:
+            #@overlay/match by=overlay.subset({"name": "backstage"}),expects="1+"
+            #@overlay/match-child-defaults missing_ok=True
+            - image: IMAGE-REFERENCE
+            #@overlay/replace
+              args:
+              - -c
+              - |
+                export KUBERNETES_SERVICE_ACCOUNT_TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
+                exec /layers/tanzu-buildpacks_node-engine-lite/node/bin/node portal/dist/packages/backend  \
+                --config=portal/app-config.yaml \
+                --config=portal/runtime-config.yaml \
+                --config=/etc/app-config/app-config.yaml
