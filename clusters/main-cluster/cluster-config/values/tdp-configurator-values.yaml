@@ -4,12 +4,30 @@ tdp_configurator:
   config: |
     app:
       plugins:
-        - name: "@vmware-tanzu/tdp-plugin-techinsights"
-          version: "0.0.2"
+        - name: '@vmware-tanzu/tdp-plugin-techinsights'
+          version: '0.0.2'
+        - name: '@vmware-tanzu/tdp-plugin-home'
+          version: '0.0.2'
+        - name: '@vmware-tanzu/tdp-plugin-stack-overflow'
+          version: '0.0.2'
+        - name: '@vmware-tanzu/tdp-plugin-backstage-sonarqube'
+          version: '0.0.2'
+        - name: '@vmware-tanzu/tdp-plugin-snyk'
+          version: '0.0.2'
+        - name: '@vmware-tanzu/tdp-plugin-github-actions'
+          version: '0.0.2'
+        - name: '@vmware-tanzu/tdp-plugin-backstage-jira'
+          version: '0.0.2'
+        - name: '@vmware-tanzu/tdp-plugin-prometheus'
+          version: '0.0.2'
+        - name: '@vmware-tanzu/tdp-plugin-backstage-grafana'
+          version: '0.0.2'
     backend:
       plugins:
-        - name: "@vmware-tanzu/tdp-plugin-techinsights-backend"
-          version: "0.0.2"
+        - name: '@vmware-tanzu/tdp-plugin-techinsights-backend'
+          version: '0.0.2'
+        - name: '@vmware-tanzu/tdp-plugin-backstage-sonarqube-backend'
+          version: '0.0.3'
   custom_image: harbor.main.emea.end2end.link/tap/tdp-configurator-tdp-configurator@sha256:c304d5547a589ee74ad564dfca4ae4fe71527f61de1d36c9ccd71da6f74be892
   overlay: |
     #@ load("@ytt:overlay", "overlay")
