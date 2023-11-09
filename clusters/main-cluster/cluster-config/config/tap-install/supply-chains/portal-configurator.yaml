@@ -115,28 +115,28 @@ spec:
     labels: #@ merge_labels({ "app.kubernetes.io/component": "build" })
   spec:
     tag: #@ image()
-      serviceAccountName: #@ data.values.params.serviceAccount
-      builder:
-        kind: ClusterBuilder
-        name: #@ data.values.params.clusterBuilder
-      source:
-        blob:
-          url: #@ data.values.source.url
-        subPath: builder
-      build:
-        env:
-        - name: BP_OCI_SOURCE
-          value: #@ data.values.source.revision
-        #@  if regexp.match("^([a-zA-Z0-9\/_-]+)(\@sha1:)?[0-9a-f]{40}$", data.values.source.revision):
-        - name: BP_OCI_REVISION
-          value: #@ data.values.source.revision
-        #@ end
-        - name: BP_NODE_RUN_SCRIPTS
-          value: #@ bp_node_run_scripts
-        - name: TPB_CONFIG
-          value: #@ tpb_config
-        - name: TPB_CONFIG_STRING
-          value: #@ tpb_config_string
+    serviceAccountName: #@ data.values.params.serviceAccount
+    builder:
+      kind: ClusterBuilder
+      name: #@ data.values.params.clusterBuilder
+    source:
+      blob:
+        url: #@ data.values.source.url
+      subPath: builder
+    build:
+      env:
+      - name: BP_OCI_SOURCE
+        value: #@ data.values.source.revision
+      #@  if regexp.match("^([a-zA-Z0-9\/_-]+)(\@sha1:)?[0-9a-f]{40}$", data.values.source.revision):
+      - name: BP_OCI_REVISION
+        value: #@ data.values.source.revision
+      #@ end
+      - name: BP_NODE_RUN_SCRIPTS
+        value: #@ bp_node_run_scripts
+      - name: TPB_CONFIG
+        value: #@ tpb_config
+      - name: TPB_CONFIG_STRING
+        value: #@ tpb_config_string
 ---
 apiVersion: carto.run/v1alpha1
 kind: ClusterSourceTemplate
