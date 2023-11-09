@@ -34,9 +34,9 @@ spec:
       name: tdp-kpack-template
   selectorMatchExpressions:
   - key: apps.tanzu.vmware.com/workload-type
-  operator: In
-  values:
-  - tdp
+    operator: In
+    values:
+    - tdp
 ---
 apiVersion: carto.run/v1alpha1
 kind: ClusterImageTemplate
