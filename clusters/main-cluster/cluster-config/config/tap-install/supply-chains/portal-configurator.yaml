@@ -24,8 +24,8 @@ spec:
         ca_cert_data: ""
         repository: #@ data.values.supply_chains.shared.registry.repository
         server: #@ data.values.supply_chains.shared.registry.server
-  - default: default
-    name: clusterBuilder
+    - default: default
+      name: clusterBuilder
     sources:
     - name: source
       resource: source-provider
