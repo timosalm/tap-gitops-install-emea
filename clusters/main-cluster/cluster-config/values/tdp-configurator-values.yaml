@@ -13,23 +13,3 @@ tdp_configurator:
         - name: '@timosalm/plugin-tech-insights-wrapper-backend'
           version: '1.0.0'
   custom_image: harbor.main.emea.end2end.link/tap/tdp-configurator-tdp-configurator@sha256:2d73f2ea849ef59172ef06fd42e28c30f5ac7d04d82daa7132710239af176304
-  overlay: |
-    #@ load("@ytt:overlay", "overlay")
-    #@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"name": "server", "namespace": "tap-gui"}}), expects="1+"
-    ---
-    spec:
-      template:
-        spec:
-          containers:
-            #@overlay/match by=overlay.subset({"name": "backstage"}),expects="1+"
-            #@overlay/match-child-defaults missing_ok=True
-            - image: IMAGE-REFERENCE
-            #@overlay/replace
-              args:
-              - -c
-              - |
-                export KUBERNETES_SERVICE_ACCOUNT_TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
-                exec /layers/tanzu-buildpacks_node-engine-lite/node/bin/node portal/dist/packages/backend  \
-                --config=portal/app-config.yaml \
-                --config=portal/runtime-config.yaml \
-                --config=/etc/app-config/app-config.yaml
