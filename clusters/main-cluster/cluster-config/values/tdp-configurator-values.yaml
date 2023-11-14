@@ -8,10 +8,8 @@ tdp_configurator:
           version: '1.0.0'
         - name: '@timosalm/tech-radar-wrapper'
           version: '1.0.1'
-        - name: '@timosalm/scaffolder-wrapper'
-          version: '1.0.1'
     backend:
       plugins:
         - name: '@timosalm/plugin-tech-insights-wrapper-backend'
           version: '1.0.0'
-  custom_image: harbor.main.emea.end2end.link/tap/tdp-config-tdp-configurator@sha256:b3b8824a730576204d2159a68fa0f2e978f8c942d1b3941404343e020dee7e9c
+  custom_image: harbor.main.emea.end2end.link/tap/tdp-config-tdp-configurator@sha256:3f9767f3fcf32fe7957db450af770db86196e27b6e167c6381156bd4d089402a
