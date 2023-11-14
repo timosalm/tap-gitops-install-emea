@@ -9,7 +9,7 @@ tdp_configurator:
         - name: '@timosalm/tech-radar-wrapper'
           version: '1.0.1'
         - name: '@timosalm/scaffolder-wrapper'
-          version: '1.0.0'
+          version: '1.0.1'
     backend:
       plugins:
         - name: '@timosalm/plugin-tech-insights-wrapper-backend'
