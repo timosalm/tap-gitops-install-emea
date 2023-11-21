@@ -98,4 +98,3 @@ tap_install:
     - name: tap-gui
       secrets:
       - name: tdp-app-image-overlay-secret
-      - name: tap-gui-rbac-overlay
