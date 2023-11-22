@@ -117,3 +117,6 @@ tap_install:
     - name: tap-gui
       secrets:
       - name: tdp-app-image-overlay-secret
+    - name: fluxcd-source-controller
+      secrets:
+      - name: source-controller-manager-overlay-secret
