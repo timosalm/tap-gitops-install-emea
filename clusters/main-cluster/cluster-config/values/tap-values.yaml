@@ -11,6 +11,12 @@ tap_install:
     buildservice:
       kp_default_repository: 377668981663.dkr.ecr.eu-central-1.amazonaws.com/tap-build-service
       kp_default_repository_aws_iam_role_arn: arn:aws:iam::377668981663:role/tap-build-service
+      controller:
+        resources:
+          limits:
+            memory: 2Gi
+          requests:
+            memory: 1Gi
     supply_chain: testing_scanning  # Required for namespace provisioner to apply scan templates
     ootb_templates:
       iaas_auth: true
@@ -74,6 +80,10 @@ tap_install:
       feature_flags:
         enable_api_fields: alpha
     cartographer: 
+      conventions:
+        resources:
+          limits:
+            memory: 1.8Gi
       cartographer:
         concurrency: 
           max_deliveries: 25
@@ -86,6 +96,15 @@ tap_install:
           requests: 
             cpu: 3000m
             memory: 10Gi
+    scanning:
+      resources:
+        limits:
+          memory: 3Gi
+        requests:
+          memory: 1Gi
+    amr:
+      observer:
+        app_limit_memory: 1Gi
     grype:
       targetImagePullSecret: registries-credentials
     excluded_packages:
