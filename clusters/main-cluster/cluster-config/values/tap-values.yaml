@@ -123,4 +123,7 @@ tap_install:
     - name: source-controller
       secrets: 
       - name: source-controller-manager-overlay-secret
+    - name: cnrs
+      secrets:
+      - name: knative-serving-config-features-overlay-secret
     
