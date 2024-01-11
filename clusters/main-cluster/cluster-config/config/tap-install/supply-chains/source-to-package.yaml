@@ -18,8 +18,6 @@ spec:
     default: supplychain@cluster.local
   - name: gitops_ssh_secret
     default: #@ data.values.supply_chains.shared.gitops.ssh_secret
-  - name: gitops_repository_prefix
-    default: #@ data.values.supply_chains.shared.gitops.repository_prefix
   - name: gitops_server_address
     default: #@ data.values.supply_chains.shared.gitops.server_address
   - name: gitops_repository_owner
