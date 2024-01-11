@@ -178,7 +178,7 @@ spec:
       name: carvel-package
     params:
       - name: carvel_package_openapiv3_enabled
-        value: false
+        value: true
     configs:
       - resource: api-descriptors
         name: config
