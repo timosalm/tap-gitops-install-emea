@@ -34,7 +34,6 @@ spec:
     default: #@ data.values.supply_chains.shared.gitops.pull_request.pull_request_title
   - name: gitops_pull_request_body
     default: #@ data.values.supply_chains.shared.gitops.pull_request.pull_request_body
-  #@ end
   - name: image_scanning_service_account_publisher
     value: default
   - default: default
