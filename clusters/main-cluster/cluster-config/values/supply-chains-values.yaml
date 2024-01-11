@@ -4,3 +4,16 @@ supply_chains:
       server:  harbor.main.emea.end2end.link
       repository: tap
     image_scanning_cli: 377668981663.dkr.ecr.eu-central-1.amazonaws.com/tap-images@sha256:9ef533905d900ccb86883eeb78843b965be685f8d7e7c31066b4b1d8d383ab41
+    gitops:
+      server_address: https://github.com/
+      repository_owner: timosalm
+      repository_name: tap-gitops
+      branch: test
+      ssh_secret: git-credentials
+      commit_strategy: pull_request
+      pull_request:
+        server_kind: github
+        pull_request_title: Approval for test deployment
+        pull_request_body: Please review the configuration and approve the deployment to test
+        commit_branch: ""
+  

@@ -1,0 +1,40 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: developer-defined-tekton-pipeline
+  labels:
+    apps.tanzu.vmware.com/pipeline: test     # (!) required
+spec:
+  params:
+  - name: source-url
+    type: string
+  - name: source-revision
+    type: string
+  - default: "."
+    name: source-sub-path
+    type: string
+  tasks:
+  - name: test-maven
+    params:
+    - name: source-url
+      value: "$(params.source-url)"
+    - name: source-revision
+      value: "$(params.source-revision)"
+    - name: source-sub-path
+      value: "$(params.source-sub-path)"
+    taskSpec:
+      metadata: {}
+      params:
+      - name: source-url
+      - name: source-revision
+      - name: source-sub-path
+      steps:
+      - image: gradle
+        name: test
+        resources: {}
+        script: |-
+          cd `mktemp -d`
+
+          wget -qO- $(params.source-url) | tar xvz -m
+          cd $(params.source-sub-path)
+          ./mvnw test
