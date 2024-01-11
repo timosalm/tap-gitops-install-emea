@@ -24,12 +24,12 @@ spec:
     default: #@ data.values.supply_chains.shared.gitops.repository_owner
   - name: gitops_repository_name
     default: #@ data.values.supply_chains.shared.gitops.repository_name
+  - name: gitops_commit_message
+    default: #@ data.values.supply_chains.shared.gitops.commit_message
   - name: gitops_server_kind
     default: #@ data.values.supply_chains.shared.gitops.pull_request.server_kind
   - name: gitops_commit_branch
     default: #@ data.values.supply_chains.shared.gitops.pull_request.commit_branch
-  - name: gitops_commit_message
-    default: #@ data.values.supply_chains.shared.gitops.pull_request.commit_message
   - name: gitops_pull_request_title
     default: #@ data.values.supply_chains.shared.gitops.pull_request.pull_request_title
   - name: gitops_pull_request_body
