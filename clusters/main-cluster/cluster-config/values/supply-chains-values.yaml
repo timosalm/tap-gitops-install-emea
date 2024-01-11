@@ -12,6 +12,7 @@ supply_chains:
       branch: test
       ssh_secret: git-credentials
       commit_strategy: pull_request
+      commit_message: Update from TAP Supply Chain Choreographer
       pull_request:
         server_kind: github
         pull_request_title: Approval for test deployment
