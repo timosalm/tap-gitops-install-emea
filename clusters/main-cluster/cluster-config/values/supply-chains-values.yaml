@@ -4,6 +4,7 @@ supply_chains:
       server:  harbor.main.emea.end2end.link
       repository: tap
     image_scanning_cli: 377668981663.dkr.ecr.eu-central-1.amazonaws.com/tap-images@sha256:9ef533905d900ccb86883eeb78843b965be685f8d7e7c31066b4b1d8d383ab41
+    carvel_package_name_suffix: timosalm.de
     gitops:
       server_address: https://github.com/
       repository_owner: timosalm
