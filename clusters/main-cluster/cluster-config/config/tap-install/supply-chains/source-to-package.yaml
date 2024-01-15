@@ -177,6 +177,8 @@ spec:
     params:
       - name: carvel_package_openapiv3_enabled
         value: true
+      - name: carvel_package_name_suffix
+        default: tap
     configs:
       - resource: api-descriptors
         name: config
