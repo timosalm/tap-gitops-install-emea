@@ -50,6 +50,8 @@ spec:
       ca_cert_data: ""
       repository: #@ data.values.supply_chains.shared.registry.repository
       server: #@ data.values.supply_chains.shared.registry.server
+  - name: carvel_package_name_suffix
+    default: tap
   resources:
   - name: source-provider
     params:
@@ -177,8 +179,6 @@ spec:
     params:
       - name: carvel_package_openapiv3_enabled
         value: true
-      - name: carvel_package_name_suffix
-        default: tap
     configs:
       - resource: api-descriptors
         name: config
