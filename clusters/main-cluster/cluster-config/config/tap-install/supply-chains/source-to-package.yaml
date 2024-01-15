@@ -50,8 +50,6 @@ spec:
       ca_cert_data: ""
       repository: #@ data.values.supply_chains.shared.registry.repository
       server: #@ data.values.supply_chains.shared.registry.server
-  - name: carvel_package_name_suffix
-    default: #@ data.values.supply_chains.shared.carvel_package_name_suffix
   resources:
   - name: source-provider
     params:
