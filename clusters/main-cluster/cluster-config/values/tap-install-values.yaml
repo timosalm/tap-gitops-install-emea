@@ -2,8 +2,8 @@ tap_install:
   package_repository:
     oci_repository: 377668981663.dkr.ecr.eu-central-1.amazonaws.com/tap-images
   version:
-    package_repo_bundle_tag: "1.7.0"
-    package_version: "1.7.0"
+    package_repo_bundle_tag: "1.7.3"
+    package_version: "1.7.3"
   packages:
     acs:
       version:
