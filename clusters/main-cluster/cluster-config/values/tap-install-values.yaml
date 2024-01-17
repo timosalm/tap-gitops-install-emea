@@ -10,7 +10,7 @@ tap_install:
         package_version: "2.2.0"
     scg:
       version:
-        package_version: "2.1.4"
+        package_version: "2.1.6"
     service_registry:
       version:
         package_version: "1.2.0"
