@@ -48,7 +48,7 @@ spec:
   - name: registry
     default:
       ca_cert_data: ""
-      repository: #@ data.values.supply_chains.shared.registry.repository
+      repository: #@ data.values.supply_chains.shared.registry.public_repository
       server: #@ data.values.supply_chains.shared.registry.server
   - name: carvel_package_name_suffix
     default: tap
