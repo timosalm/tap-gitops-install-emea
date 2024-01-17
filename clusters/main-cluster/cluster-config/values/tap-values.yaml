@@ -72,11 +72,6 @@ tap_install:
           subPath: clusters/main-cluster/namespace-provisioner/additional-resources
           url: https://github.com/timosalm/tap-gitops-install-emea.git
         path: _ytt_lib/additional-resources
-      - git:
-          ref: origin/main
-          subPath: clusters/main-cluster/namespace-provisioner/overlays
-          url: https://github.com/timosalm/tap-gitops-install-emea.git
-        path: _ytt_lib/customize
     local_source_proxy:
       repository: harbor.main.emea.end2end.link/tap/local-source
       push_secret:
