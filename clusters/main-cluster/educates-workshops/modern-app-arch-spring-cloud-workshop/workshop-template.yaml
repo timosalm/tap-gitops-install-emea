@@ -11,9 +11,15 @@ spec:
   difficulty: beginner
   duration: 60m
   url: https://github.com/timosalm/modern-app-arch-spring-cloud-workshop
-  content:
-    image: ghcr.io/timosalm/modern-app-arch-spring-cloud-workshop?ref=main
-    files: github.com/timosalm/modern-app-arch-spring-cloud-workshop?ref=main
+  workshop:
+    image: ghcr.io/timosalm/modern-app-arch-spring-cloud-workshop@sha256:1b087e3548c037b2cd06496a9276c6ea771bef06f8b123ad8badd3239311f2a7
+    files:
+    - git:
+        url: https://github.com/timosalm/modern-app-arch-spring-cloud-workshop
+        ref: origin/main
+      includePaths:
+      - /workshop/**
+      - /samples/**
   session:
     namespaces:
       budget: custom
