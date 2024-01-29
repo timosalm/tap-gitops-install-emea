@@ -1,0 +1,52 @@
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: cnr-eventing-advanced
+spec:
+  title: Cloud Native Runtimes for Tanzu - Knative Eventing
+  description: A workshop that demonstrates the capabilities of Knative Eventing as part of Cloud Native Runtimes for Tanzu
+  workshop:
+    image: ghcr.io/timosalm/cnr-eventing-advanced:main
+    files:
+    - git:
+        url: https://github.com/timosalm/cnr-eventing-advanced
+        ref: origin/main
+      includePaths:
+      - /workshop/**
+  session:
+    namespaces:
+      budget: custom
+      role: view
+      security:
+        policy: baseline
+    applications:
+      terminal:
+        enabled: true
+        layout: split
+      console:
+        enabled: true
+      editor:
+        enabled: true
+    objects:
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: Role
+      metadata:
+        name: $(session_namespace)-session
+        namespace: $(session_namespace)
+      rules:
+      - apiGroups: [eventing.knative.dev,sources.knative.dev,serving.knative.dev,flows.knative.dev]
+        resources: ['*']
+        verbs: ['*']
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: $(session_namespace)-session-rb
+        namespace: $(session_namespace)
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: Role
+        name: $(session_namespace)-session
+      subjects:
+        - kind: ServiceAccount
+          namespace: $(workshop_namespace)
+          name: $(service_account)

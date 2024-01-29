@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sc-architecture
+  annotations:
+    param.nsp.tap/supply_chain_service_account.secrets: '["git-credentials"]'
+  labels:
+    apps.tanzu.vmware.com/tap-ns: ""

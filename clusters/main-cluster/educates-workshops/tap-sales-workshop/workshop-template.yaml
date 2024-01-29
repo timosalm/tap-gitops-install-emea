@@ -1,0 +1,80 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: sales-workshop
+spec:
+  title: TAP & VAC Sales
+  description: A workshop that demonstrates some of the capabilities of Tanzu Application Platform and VMware Application Catalog.
+  vendor: tanzu.vmware.com
+  difficulty: beginner
+  duration: 60m
+  url: https://github.com/timosalm/tap-sales-workshop
+  content:
+    image: ghcr.io/timosalm/tap-sales-workshop:main
+    files: github.com/timosalm/tap-sales-workshop?ref=main
+  session:
+    namespaces:
+      budget: custom
+    applications:
+      terminal:
+        enabled: true
+      console:
+        enabled: true
+      editor:
+        enabled: true
+    env: 
+    - name: TAP_INGRESS
+      value: #@ data.values.tap.ingress_domain
+    - name: CONTAINER_REGISTRY_HOSTNAME
+      value: #@ data.values.container_registry.hostname
+    - name: CONTAINER_REGISTRY_USERNAME
+      value: #@ data.values.container_registry.username
+    - name: CONTAINER_REGISTRY_PASSWORD
+      value: #@ data.values.container_registry.password
+    - name: CONTAINER_REGISTRY_REPOSITORY
+      value: #@ data.values.container_registry.repository
+    objects:
+      - apiVersion: rbac.authorization.k8s.io/v1
+        kind: ClusterRole
+        metadata:
+          name: $(session_namespace)-session-cr
+        rules:
+        - apiGroups:
+          - carto.run
+          resources:
+          - workloads
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          verbs:
+          - 'patch'
+        - apiGroups:
+          - scanning.apps.tanzu.vmware.com
+          resources:
+          - scanpolicies
+          verbs:
+          - '*'
+        - apiGroups:
+          - services.apps.tanzu.vmware.com
+          resources:
+          - resourceclaims
+          verbs:
+          - '*'
+      - apiVersion: rbac.authorization.k8s.io/v1
+        kind: ClusterRoleBinding
+        metadata:
+          name: $(session_namespace)-session-rb
+          namespace: $(session_namespace)
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: $(session_namespace)-session-cr
+        subjects:
+          - kind: ServiceAccount
+            namespace: $(workshop_namespace)
+            name: $(service_account)

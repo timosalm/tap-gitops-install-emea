@@ -1,0 +1,82 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:base64", "base64")
+#@ load("@ytt:json", "json")
+---
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: going-serverless
+spec:
+  title: Going Serverless with Spring Boot 3
+  description: A workshop that demonstrates how to implement your serverless applications and compile them to GraalVM native images with Spring Boot 3.
+  vendor: tanzu.vmware.com
+  difficulty: beginner
+  duration: 90m
+  url: https://github.com/timosalm/going-serverless-workshop
+  workshop:
+    image: ghcr.io/timosalm/going-serverless-workshop:main
+    files:
+    - git:
+        url: https://github.com/timosalm/going-serverless-workshop
+        ref: origin/main
+      includePaths:
+      - /workshop/**
+      - /samples/**
+  session:
+    namespaces:
+      budget: custom
+      role: view
+      security:
+        policy: baseline
+    resources:
+      memory: 10Gi
+    applications:
+      terminal:
+        enabled: true
+        layout: split
+      console:
+        enabled: false
+      editor:
+        enabled: true
+      docker:
+        enabled: true
+        storage: 10Gi
+      slides:
+        enabled: true
+      registry:
+        enabled: true
+    env: 
+    - name: TAP_INGRESS
+      value: #@ data.values.tap.ingress_domain
+    objects:
+      - apiVersion: rbac.authorization.k8s.io/v1
+        kind: Role
+        metadata:
+          name: $(session_namespace)-session
+          namespace: $(session_namespace)
+        rules:
+        - apiGroups: [kpack.io]
+          resources: [images,builds]
+          verbs: ['*']
+        - apiGroups: [serving.knative.dev]
+          resources: [services]
+          verbs: ['*']
+        - apiGroups: [metrics.k8s.io]
+          resources: [pods]
+          verbs: ['*']
+        - apiGroups: [""]
+          resources: [serviceaccounts]
+          verbs: [patch]
+      - apiVersion: rbac.authorization.k8s.io/v1
+        kind: RoleBinding
+        metadata:
+          name: $(session_namespace)-session-rb
+          namespace: $(session_namespace)
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: $(session_namespace)-session
+        subjects:
+          - kind: ServiceAccount
+            namespace: $(workshop_namespace)
+            name: $(service_account)

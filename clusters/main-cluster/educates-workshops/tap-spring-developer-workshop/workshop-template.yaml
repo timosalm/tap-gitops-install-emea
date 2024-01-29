@@ -1,0 +1,336 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: tap-spring-dev-workshop
+spec:
+  title: TAP for Spring Developers
+  description: A workshop that demonstrates capabilities of Tanzu Application Platform for Spring developers.
+  url: https://github.com/timosalm/tap-spring-developer-workshop
+  workshop:
+    image: ghcr.io/timosalm/tap-spring-developer-workshop@sha256:e09db93aa2e905ee19bf3749d0f57e0f5036f65180263c4e6ee01e341303945a
+    files:
+    - git:
+        url: https://github.com/timosalm/tap-spring-developer-workshop
+        ref: origin/educates
+      includePaths:
+      - /workshop/**
+      - /samples/**
+  session:
+    namespaces:
+      budget: custom
+      role: view
+      security:
+        policy: baseline
+    applications:
+      terminal:
+        enabled: true
+        layout: split
+      editor:
+        enabled: true
+      git:
+        enabled: true
+      registry:
+        enabled: true
+      examiner:
+        enabled: true
+      files:
+        enabled: true
+    env: 
+    - name: TAP_INGRESS
+      value: #@ data.values.tap.ingress_domain
+    ingresses:
+    - name: twelve-factors
+      protocol: https
+      host: 12factor.net 
+      port: 443
+    - name: git-ui
+      port: 1234
+    dashboards:
+    - name: GIT UI
+      url: "$(ingress_protocol)://git-ui-$(session_name).$(ingress_domain)"
+    objects:   
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      metadata:
+        name: $(session_namespace)-session-cr
+      rules:
+      - apiGroups: [services.apps.tanzu.vmware.com]
+        resources: [clusterinstanceclasses]
+        verbs: [get, list, claim]    
+      - apiGroups: [""]
+        resources: [nodes]
+        verbs: ["get", "watch", "list"]    
+      - apiGroups: [learningcenter.tanzu.vmware.com]
+        resources: [workshopsessions]
+        verbs: ["get", "watch", "list"]          
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      metadata:
+        name: $(session_namespace)-session-rb
+        namespace: $(session_namespace)
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: $(session_namespace)-session-cr
+      subjects:
+        - kind: ServiceAccount
+          namespace: $(workshop_namespace)
+          name: $(service_account)
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: Role
+      metadata:
+        name: $(session_namespace)-session
+        namespace: $(session_namespace)
+      rules:
+      - apiGroups: [""]
+        resources: ["pods/portforward","pods/exec"]
+        verbs: ['*']
+      - apiGroups: [""]
+        resources: [namespaces, serviceaccounts]
+        verbs: [patch]
+      - apiGroups: ["metrics.k8s.io"]
+        resources: [pods]
+        verbs: [list]
+      - apiGroups: [ "kappctrl.k14s.io" ]
+        resources: [ apps ]
+        verbs: [ '*' ]
+      - apiGroups: [carto.run]
+        resources: [workloads, runnables]
+        verbs: ['*']
+      - apiGroups: [services.apps.tanzu.vmware.com]
+        resources: [classclaims, resourceclaims]
+        verbs: ['*']        
+      - apiGroups: [claimable.services.apps.tanzu.vmware.com]
+        resources: [instancequeries]
+        verbs: ['*']  
+      - apiGroups: [config.apps.tanzu.vmware.com]    
+        resources: [configurationsources, configurationslices]
+        verbs: ['*'] 
+      - apiGroups: [tanzu.vmware.com]    
+        resources: [springcloudgateways, springcloudgatewayrouteconfigs, springcloudgatewaymappings]
+        verbs: ['*'] 
+      - apiGroups: [sso.apps.tanzu.vmware.com]    
+        resources: [authservers, clientregistrations]
+        verbs: ['*'] 
+      - apiGroups: [secretgen.k14s.io]    
+        resources: [rsakeys]
+        verbs: ['*'] 
+      - apiGroups: [tekton.dev]
+        resources: [pipelines, taskruns]
+        verbs: ["get", "watch", "list"]    
+      - apiGroups: [kpack.io]
+        resources: [builds, images]
+        verbs: ["get", "watch", "list"]    
+      - apiGroups: [serving.knative.dev]
+        resources: [revisions, configurations, routes, services]
+        verbs: ["get", "watch", "list"]    
+      - apiGroups: [networking.internal.knative.dev]
+        resources: [ingresses, serverlessservices]
+        verbs: ["get", "watch", "list"]    
+      - apiGroups: [servicebinding.io]
+        resources: [servicebindings]
+        verbs: ["get", "watch", "list"]    
+      - apiGroups: [source.apps.tanzu.vmware.com]
+        resources: [imagerepositories]
+        verbs: ["get", "watch", "list"]    
+      - apiGroups: [autoscaling.internal.knative.dev]
+        resources: [podautoscalers]
+        verbs: ["get", "watch", "list"] 
+      - apiGroups: [apis.apps.tanzu.vmware.com]
+        resources: [apidescriptors,curatedapidescriptors]
+        verbs: ["*"] 
+      - apiGroups: [service-registry.spring.apps.tanzu.vmware.com]
+        resources: [eurekaservers]
+        verbs: ["*"]          
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: $(session_namespace)-session-rb
+        namespace: $(session_namespace)
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: Role
+        name: $(session_namespace)-session
+      subjects:
+        - kind: ServiceAccount
+          namespace: $(workshop_namespace)
+          name: $(service_account)
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        annotations:
+          tekton.dev/git-0: $(git_protocol)://$(git_host)
+        name: git-https
+      type: kubernetes.io/basic-auth
+      stringData:
+        username: $(git_username)
+        password: $(git_password)
+        basicauth.username: $(git_username)
+        basicauth.password: $(git_password)
+    - apiVersion: secretgen.carvel.dev/v1alpha1
+      kind: SecretExport
+      metadata:
+        name: educates-registry-credentials
+      spec:
+        toNamespace: $(session_namespace)
+    - apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: zipkin
+      spec:
+        selector:
+          matchLabels:
+            app: zipkin
+        template:
+          metadata:
+            labels:
+              app: zipkin
+          spec:
+            containers:
+              - image: openzipkin/zipkin
+                name: zipkin
+                ports:
+                  - containerPort: 9411
+                    protocol: TCP
+    - apiVersion: v1
+      kind: Service
+      metadata:
+        name: zipkin
+      spec:
+        selector:
+          app: zipkin
+        ports:
+          - name: http
+            port: 9411
+            protocol: TCP
+            targetPort: 9411
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: zipkin-binding-compatible
+      type: Opaque
+      stringData:
+        type: zipkin
+        uri: http://zipkin:9411
+    - apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      metadata:
+        name: zipkin-1
+      spec:
+        ref:
+          apiVersion: v1
+          kind: Secret
+          name: zipkin-binding-compatible
+    - apiVersion: projectcontour.io/v1
+      kind: HTTPProxy
+      metadata:
+        name: zipkin
+      spec:
+        routes:
+          - conditions:
+              - prefix: /
+            services:
+              - name: zipkin
+                port: 9411
+        virtualhost:
+          fqdn: #@ "zipkin-$(session_namespace).{}".format(data.values.tap.ingress_domain)
+          tls:
+            secretName: #@ data.values.tap.ingress_wildcard_cert
+    - apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      metadata:
+        name: product-config-server-claim
+      spec:
+        ref:
+          apiVersion: config.apps.tanzu.vmware.com/v1alpha4
+          kind: ConfigurationSlice
+          name: product-config-slice
+    - apiVersion: "config.apps.tanzu.vmware.com/v1alpha4"
+      kind: ConfigurationSlice
+      metadata:
+        name: order-config-slice
+      spec:
+        interval: 30s
+        configurationSource: config-source
+        content:
+        - order-service
+    - apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      metadata:
+        name: order-config-server-claim
+      spec:
+        ref:
+          apiVersion: config.apps.tanzu.vmware.com/v1alpha4
+          kind: ConfigurationSlice
+          name: order-config-slice
+    - apiVersion: "config.apps.tanzu.vmware.com/v1alpha4"
+      kind: ConfigurationSlice
+      metadata:
+        name: shipping-config-slice
+      spec:
+        interval: 30s
+        configurationSource: config-source
+        content:
+        - shipping-service
+    - apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      metadata:
+        name: shipping-config-server-claim
+      spec:
+        ref:
+          apiVersion: config.apps.tanzu.vmware.com/v1alpha4
+          kind: ConfigurationSlice
+          name: shipping-config-slice
+    - apiVersion: projectcontour.io/v1
+      kind: HTTPProxy
+      metadata:
+        name: api-gateway
+      spec:
+        routes:
+          - conditions:
+              - prefix: /
+            services:
+              - name: api-gateway-1
+                port: 80
+        virtualhost:
+          fqdn: #@ "gateway-$(session_namespace).{}".format(data.values.tap.ingress_domain)
+          tls:
+            secretName: #@ data.values.tap.ingress_wildcard_cert
+    - apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      metadata:
+        name: auth-client
+      spec:
+        ref:
+          apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
+          kind: ClientRegistration
+          name: client-registration
+    - apiVersion: projectcontour.io/v1
+      kind: HTTPProxy
+      metadata:
+        name: authserver-1
+      spec:
+        routes:
+        - services:
+          - name: authserver-1-auth-server
+            port: 80
+        virtualhost:
+          corsPolicy:
+            allowMethods:
+            - '*'
+            allowOrigin:
+            - '*'
+          fqdn: #@ "authserver-1-$(session_namespace).{}".format(data.values.tap.ingress_domain)
+          tls:
+            secretName: #@ data.values.tap.ingress_wildcard_cert
+    - apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      metadata:
+        name: eurekaserver-1
+      spec:
+        ref:
+          apiVersion: service-registry.spring.apps.tanzu.vmware.com/v1alpha1
+          kind: EurekaServer
+          name: eurekaserver-1

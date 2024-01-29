@@ -1,0 +1,142 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: scc-workshop
+spec:
+  title: Supply Chain Choreographer
+  description: A workshop that demonstrates all the capabilities Supply Chain Choreographer provides.
+  vendor: tanzu.vmware.com
+  difficulty: beginner
+  duration: 200m
+  url: https://github.com/timosalm/tap-cartographer-workshop
+  content:
+    image: ghcr.io/timosalm/tap-workshop/tap-overview-workshop:main
+    files: github.com/timosalm/tap-cartographer-workshop?ref=main
+  session:
+    namespaces:
+      budget: custom
+    applications:
+      terminal:
+        enabled: true
+        layout: split
+      console:
+        enabled: true
+      editor:
+        enabled: true
+      git:
+        enabled: true
+    env: 
+    - name: TAP_INGRESS
+      value: #@ data.values.tap.ingress_domain
+    - name: CONTAINER_REGISTRY_HOSTNAME
+      value: #@ data.values.container_registry.hostname
+    - name: CONTAINER_REGISTRY_REPOSITORY
+      value: #@ data.values.container_registry.repository
+    objects:
+      - apiVersion: rbac.authorization.k8s.io/v1
+        kind: Role
+        metadata:
+          name: $(session_namespace)-default
+        rules:
+        - apiGroups:
+          - timosalm.de
+          resources:
+          - githubrepositories
+          verbs:
+          - '*'
+      - apiVersion: rbac.authorization.k8s.io/v1
+        kind: RoleBinding
+        metadata:
+          name: $(session_namespace)-default
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: $(session_namespace)-default
+        subjects:
+          - kind: ServiceAccount
+            name: default
+          - kind: ServiceAccount
+            name: $(service_account)
+      - apiVersion: rbac.authorization.k8s.io/v1
+        kind: ClusterRole
+        metadata:
+          name: $(session_namespace)-cluster-resources-reader
+        rules:
+        - apiGroups: [conventions.apps.tanzu.vmware.com]
+          resources: ["clusterpodconventions"]
+          verbs: ["get", "watch", "list"]
+        - apiGroups: [apiextensions.k8s.io]
+          resources: [customresourcedefinitions]
+          verbs: ["get", "watch", "list"]
+        - apiGroups: [carto.run]
+          resources: ["clusterconfigtemplates", "clusterdeliveries", "clusterdeploymenttemplates","clusterimagetemplates", "clusterruntemplates", "clustersourcetemplates", "clustersupplychains", "clustertemplates"]
+          verbs: ["*"]
+      - apiVersion: rbac.authorization.k8s.io/v1
+        kind: ClusterRoleBinding
+        metadata:
+          name: $(session_namespace)-cluster-resources-reader-rb
+          namespace: $(session_namespace)
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: $(session_namespace)-cluster-resources-reader
+        subjects:
+          - kind: ServiceAccount
+            namespace: $(workshop_namespace)
+            name: $(service_account)
+      - apiVersion: rbac.authorization.k8s.io/v1
+        kind: Role
+        metadata:
+          name: $(session_namespace)-session
+          namespace: $(session_namespace)
+        rules:
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          verbs:
+          - 'patch'
+        - apiGroups: [tekton.dev]
+          resources: [tasks, pipelines]
+          verbs: ['*']
+        - apiGroups: [carto.run]
+          resources: [workloads, deliverables]
+          verbs: ['*']
+        - apiGroups: [source.toolkit.fluxcd.io]
+          resources: [gitrepositories]
+          verbs: ['*']
+        - apiGroups: [kpack.io]
+          resources: [images]
+          verbs: ['*']
+        - apiGroups: ['*']
+          resources: ['*']
+          verbs: ["get", "watch", "list"]
+      - apiVersion: rbac.authorization.k8s.io/v1
+        kind: RoleBinding
+        metadata:
+          name: $(session_namespace)-session-rb
+          namespace: $(session_namespace)
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: $(session_namespace)-session
+        subjects:
+          - kind: ServiceAccount
+            namespace: $(workshop_namespace)
+            name: $(service_account)
+      - apiVersion: carto.run/v1alpha1
+        kind: Workload
+        metadata:
+          labels:
+            app.kubernetes.io/part-of: ootb-sc-demo
+            apps.tanzu.vmware.com/has-tests: "true"
+            apps.tanzu.vmware.com/workload-type: web
+          name: ootb-sc-demo
+        spec:
+          source:
+            git:
+              ref:
+                branch: main
+              url: https://github.com/timosalm/spring-boot-hello-world.git

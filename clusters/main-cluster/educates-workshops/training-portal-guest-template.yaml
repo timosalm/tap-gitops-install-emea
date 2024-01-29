@@ -1,0 +1,52 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: training.educates.dev/v1beta1
+kind: TrainingPortal
+metadata:
+  name: workshops-public
+  annotations:
+    kapp.k14s.io/update-strategy: fallback-on-replace
+spec:
+  portal:
+    sessions:
+      maximum: 50
+    updates:
+      workshop: true
+    title: Interactive Workshops for Tanzu
+    password: #@ data.values.training_portal.guestPassword
+    registration:
+      type: anonymous
+    #@ if hasattr(data.values, "training_portal"):
+    credentials:
+      admin:
+        password: #@ data.values.training_portal.adminPassword
+      robot:
+        password: #@ data.values.training_portal.robotPassword
+    clients:
+      robot:
+        id: #@ data.values.training_portal.robotClientId
+        secret: #@ data.values.training_portal.robotClientSecret
+    #@ end
+  workshops:
+  - name: tap-spring-dev-workshop
+    capacity: 40
+    reserved: 0
+    overtime: 30m
+    deadline: 8h
+    expires: 4h
+    orphaned: 1h
+  - name: going-serverless
+    capacity: 40
+    reserved: 0
+    expires: 3h
+    orphaned: 1h
+  - name: devx-platform
+    capacity: 40
+    reserved: 0
+    expires: 3h
+    orphaned: 1h
+  - name: bootiful-kubernetes-operators
+    capacity: 40
+    reserved: 0
+    expires: 2h
+    orphaned: 1h

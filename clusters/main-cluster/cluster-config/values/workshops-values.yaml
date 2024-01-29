@@ -1,13 +1,13 @@
 workshops:
   git:
-    url: https://github.com/timosalm/tap-gitops-workshops
-    ref: educates
-    sub_path:
+    url: https://github.com/timosalm/tap-gitops-install-emea.git
+    ref: main
+    sub_path: clusters/main-cluster/educates-workshops
   values:
     tap:
       ingress_domain: main.emea.end2end.link
       ingress_wildcard_cert: tanzu-system-ingress/contour-tls-delegation-cert
-      product_docs_base_url: https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.6/tap
+      product_docs_base_url: https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.7/tap
     container_registry:
       hostname: harbor.main.emea.end2end.link
       repository: tap-workshop-examples

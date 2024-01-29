@@ -1,0 +1,90 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: training.educates.dev/v1beta1
+kind: TrainingPortal
+metadata:
+  name: workshops-dev
+  annotations:
+    kapp.k14s.io/update-strategy: fallback-on-replace
+spec:
+  portal:
+    sessions:
+      maximum: 50
+    updates:
+      workshop: true
+    title: Interactive Workshops for Tanzu (DEV)
+    registration:
+      type: one-step
+      enabled: false
+    #@ if hasattr(data.values, "training_portal"):
+    credentials:
+      admin:
+        password: #@ data.values.training_portal.adminPassword
+      robot:
+        password: #@ data.values.training_portal.robotPassword
+    clients:
+      robot:
+        id: #@ data.values.training_portal.robotClientId
+        secret: #@ data.values.training_portal.robotClientSecret
+    #@ end
+  workshops:
+  - name: tap-spring-dev-workshop
+    capacity: 40
+    reserved: 0
+    expires: 3h
+    orphaned: 1h
+  - name: tap-operator
+    capacity: 40
+    reserved: 0
+    expires: 3h
+    orphaned: 1h
+  - name: devx-platform
+    capacity: 40
+    reserved: 0
+    expires: 3h
+    orphaned: 1h
+  - name: sales-workshop
+    capacity: 40
+    reserved: 0
+    expires: 2h
+    orphaned: 1h
+  - name: tap-carvel-workshop
+    capacity: 40
+    reserved: 0
+    expires: 2h
+    orphaned: 1h
+  - name: scc-workshop
+    capacity: 40
+    reserved: 0
+    expires: 2h
+    orphaned: 1h
+  - name: going-serverless
+    capacity: 40
+    reserved: 0
+    expires: 3h
+    orphaned: 1h
+  - name: modern-app-arch-spring-cloud-workshop
+    capacity: 40
+    reserved: 0
+    expires: 3h
+    orphaned: 1h
+  - name: bootiful-kubernetes-operators
+    capacity: 40
+    reserved: 0
+    expires: 2h
+    orphaned: 1h
+  - name: cnr-fundamentals
+    capacity: 40
+    reserved: 0
+    expires: 2h
+    orphaned: 1h
+  - name: cnr-serving-advanced
+    capacity: 40
+    reserved: 0
+    expires: 2h
+    orphaned: 1h
+  - name:  cnr-eventing-advanced
+    capacity: 40
+    reserved: 0
+    expires: 2h
+    orphaned: 1h

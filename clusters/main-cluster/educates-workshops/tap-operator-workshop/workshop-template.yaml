@@ -1,0 +1,198 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: tap-operator
+spec:
+  title: TAP for Operators
+  description: A workshop that demonstrates capabilities of Tanzu Application Platform for operators.
+  vendor: tanzu.vmware.com
+  difficulty: beginner
+  duration: 60m
+  url: https://github.com/timosalm/tap-operator-workshop
+  workshop:
+    image: ghcr.io/timosalm/tap-operator-workshop:main
+    files:
+    - git:
+        url: https://github.com/timosalm/tap-operator-workshop
+        ref: origin/main
+      includePaths:
+      - /workshop/**
+      - /samples/**
+  session:
+    namespaces:
+      budget: custom
+      role: view
+      security:
+        policy: baseline
+    applications:
+      terminal:
+        enabled: true
+        layout: split
+      console:
+        enabled: true
+      editor:
+        enabled: true
+      registry:
+        enabled: true
+    env: 
+    - name: TAP_INGRESS
+      value: #@ data.values.tap.ingress_domain
+    - name: METADATA_STORE_ACCESS_TOKEN
+      value: #@ data.values.metadatastore.accesstoken
+    objects:
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: Role
+      metadata:
+        name: workload-gitops
+        namespace: $(session_namespace)
+      rules:
+      - apiGroups:
+        - carto.run
+        resources:
+        - workloads
+        verbs:
+        - '*'
+      - apiGroups:
+        - ''
+        resources:
+        - pods
+        - configmaps
+        verbs:
+        - 'get'
+        - 'list'
+        - 'create'
+        - 'update'
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: default-workload-gitops
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: Role
+        name: workload-gitops
+      subjects:
+        - kind: ServiceAccount
+          name: default
+          namespace: $(session_namespace)
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      metadata:
+        name: $(session_namespace)-session-cr
+      rules:
+      - apiGroups:
+        - kappctrl.k14s.io
+        resources:
+        - apps
+        verbs:
+        - 'get'
+        - 'list'
+      - apiGroups:
+        - data.packaging.carvel.dev
+        resources:
+        - packagemetadatas
+        verbs:
+        - 'get'
+        - 'list'
+      - apiGroups:
+        - servicebinding.io
+        - tekton.dev
+        - kpack.io
+        - carto.run
+        - scanning.apps.tanzu.vmware.com
+        - conventions.carto.run
+        - serving.knative.dev
+        - packaging.carvel.dev
+        - pkg.crossplane.io
+        - projectcontour.io
+        - services.apps.tanzu.vmware.com
+        - source.toolkit.fluxcd.io
+        resources:
+        - '*'
+        verbs:
+        - 'get'
+        - 'list'
+      - apiGroups:
+        - services.apps.tanzu.vmware.com
+        resources:
+        - classclaims
+        verbs:
+        - 'create'
+      - apiGroups:
+        - services.apps.tanzu.vmware.com
+        resources:
+        - clusterinstanceclasses
+        verbs:
+        - 'claim'
+      - apiGroups:
+        - scanning.apps.tanzu.vmware.com
+        resources:
+        - scanpolicies
+        verbs:
+        - 'get'
+        - 'list'
+        - 'create'
+        - 'update'
+        - 'patch'
+      - apiGroups:
+        - ""
+        resources:
+        - namespaces
+        verbs:
+        - 'patch'
+      - apiGroups:
+        - "apiextensions.k8s.io"
+        resources:
+        - customresourcedefinitions
+        verbs:
+        - 'get'
+        - 'list'
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      metadata:
+        name: $(session_namespace)-session-rb
+        namespace: $(session_namespace)
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: $(session_namespace)-session-cr
+      subjects:
+        - kind: ServiceAccount
+          namespace: $(workshop_namespace)
+          name: $(service_account)
+    - apiVersion: secretgen.carvel.dev/v1alpha1
+      kind: SecretExport
+      metadata:
+        name: educates-registry-credentials
+      spec:
+        toNamespace: $(session_namespace)
+    - apiVersion: kappctrl.k14s.io/v1alpha1
+      kind: App
+      metadata:
+        name: workload-gitops
+      spec:
+        serviceAccountName: default
+        fetch:
+        - git:
+            url: https://github.com/timosalm/tap-operator-workshop.git
+            ref: origin/main
+            subPath: samples/workload-gitops
+        template:
+        - ytt:
+            inline:
+              paths:
+                add-registry.yml: |
+                  #@ load("@ytt:overlay", "overlay")
+                  #@overlay/match by=overlay.subset({"kind":"Workload"})
+                  ---
+                  spec:
+                    #@overlay/match missing_ok=True
+                    params:
+                    #@overlay/append
+                    - name: registry
+                      value:
+                        server: $(registry_host)
+                        repository: workloads
+        deploy:
+        - kapp: {}

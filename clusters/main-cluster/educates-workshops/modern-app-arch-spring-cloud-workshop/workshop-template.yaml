@@ -1,0 +1,155 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: modern-app-arch-spring-cloud-workshop
+spec:
+  title: Modern App Architectures with Spring Cloud
+  description: A workshop on how to mitigate the challenges of a typical microservices application with the Spring Framework ecosystem
+  vendor: tanzu.vmware.com
+  difficulty: beginner
+  duration: 60m
+  url: https://github.com/timosalm/modern-app-arch-spring-cloud-workshop
+  content:
+    image: ghcr.io/timosalm/modern-app-arch-spring-cloud-workshop?ref=main
+    files: github.com/timosalm/modern-app-arch-spring-cloud-workshop?ref=main
+  session:
+    namespaces:
+      budget: custom
+      role: view
+      security:
+        policy: baseline
+    applications:
+      terminal:
+        enabled: true
+        layout: split
+      editor:
+        enabled: true
+      git:
+        enabled: true
+      registry:
+        enabled: true
+      examiner:
+        enabled: true
+      files:
+        enabled: true
+    env: 
+    - name: TAP_INGRESS
+      value: #@ data.values.tap.ingress_domain
+    ingresses:
+    - name: twelve-factors
+      protocol: https
+      host: 12factor.net 
+      port: 443
+    objects:
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: Role
+      metadata:
+        name: $(session_namespace)-session
+        namespace: $(session_namespace)
+      rules:
+      - apiGroups: [""]
+        resources: [serviceaccounts, namespaces]
+        verbs: [patch]
+      - apiGroups: ["metrics.k8s.io"]
+        resources: [pods]
+        verbs: [list]
+      - apiGroups: [ "kappctrl.k14s.io" ]
+        resources: [ apps ]
+        verbs: [ '*' ]
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: $(session_namespace)-session-rb
+        namespace: $(session_namespace)
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: Role
+        name: $(session_namespace)-session
+      subjects:
+        - kind: ServiceAccount
+          namespace: $(workshop_namespace)
+          name: $(service_account)
+    - apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ClassClaim
+      metadata:
+        name: postgres-1
+      spec:
+        classRef:
+          name: postgresql-unmanaged
+    - apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ClassClaim
+      metadata:
+        name: redis-1
+      spec:
+        classRef:
+          name: redis-unmanaged
+    - apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ClassClaim
+      metadata:
+        name: rmq-1
+      spec:
+        classRef:
+          name: rabbitmq-unmanaged
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: configserver-binding-compatible
+      type: Opaque
+      stringData:
+        type: config
+        uri: http://config-server.$(session_namespace)
+    - apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      metadata:
+        name: configserver-binding-compatible
+      spec:
+        ref:
+          apiVersion: v1
+          kind: Secret
+          name: configserver-binding-compatible
+    - apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: zipkin
+      spec:
+        selector:
+          matchLabels:
+            app: zipkin
+        template:
+          metadata:
+            labels:
+              app: zipkin
+          spec:
+            containers:
+              - image: openzipkin/zipkin
+                name: zipkin
+                ports:
+                  - containerPort: 9411
+                    protocol: TCP
+    - apiVersion: v1
+      kind: Service
+      metadata:
+        name: zipkin
+      spec:
+        selector:
+          app: zipkin
+        ports:
+          - name: http
+            port: 9411
+            protocol: TCP
+            targetPort: 9411
+    - apiVersion: projectcontour.io/v1
+      kind: HTTPProxy
+      metadata:
+        name: zipkin
+      spec:
+        routes:
+          - conditions:
+              - prefix: /
+            services:
+              - name: zipkin
+                port: 9411
+        virtualhost:
+          fqdn: "zipkin-$(session_namespace).$(ingress_domain)"
