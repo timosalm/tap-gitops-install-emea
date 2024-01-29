@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: sc-architecture
+  name: tap-saas
   annotations:
     param.nsp.tap/supply_chain_service_account.secrets: '["git-credentials"]'
   labels:
