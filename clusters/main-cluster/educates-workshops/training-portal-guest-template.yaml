@@ -19,8 +19,10 @@ spec:
     #@ if hasattr(data.values, "training_portal"):
     credentials:
       admin:
+        username: educates
         password: #@ data.values.training_portal.adminPassword
       robot:
+        username: robot@educates
         password: #@ data.values.training_portal.robotPassword
     clients:
       robot:
