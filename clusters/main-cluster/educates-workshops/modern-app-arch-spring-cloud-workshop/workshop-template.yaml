@@ -48,4 +48,29 @@ spec:
       protocol: https
       host: 12factor.net 
       port: 443
-    objects: []
+    objects:
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: Role
+      metadata:
+        name: $(session_namespace)-session
+        namespace: $(session_namespace)
+      rules:
+      - apiGroups: [""]
+        resources: [namespaces]
+        verbs: [patch]
+      - apiGroups: ["metrics.k8s.io"]
+        resources: [pods]
+        verbs: [list]
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: $(session_namespace)-session-rb
+        namespace: $(session_namespace)
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: Role
+        name: $(session_namespace)-session
+      subjects:
+        - kind: ServiceAccount
+          namespace: $(workshop_namespace)
+          name: $(service_account)
