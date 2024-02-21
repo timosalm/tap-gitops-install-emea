@@ -79,3 +79,37 @@ spec:
         - kind: ServiceAccount
           namespace: $(workshop_namespace)
           name: $(service_account)
+    - apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: config-server
+      spec:
+        selector:
+          matchLabels:
+            app: config-server
+        template:
+          metadata:
+            labels:
+              app: config-server
+          spec:
+            containers:
+              - image: ghcr.io/timosalm/modern-app-arch-spring-cloud-workshop:config-server
+                name: config-server
+                ports:
+                  - containerPort: 8080
+                    protocol: TCP
+                env:
+                - name: SPRING_CLOUD_CONFIG_SERVER_GIT_URI
+                  value: $(git_protocol)://$(git_host)/externalized-configuration.git
+    - apiVersion: v1
+      kind: Service
+      metadata:
+        name: config-server
+      spec:
+        selector:
+          app: config-server
+        ports:
+          - name: http
+            port: 80
+            protocol: TCP
+            targetPort: 8080
