@@ -126,4 +126,29 @@ tap_install:
     - name: cnrs
       secrets:
       - name: knative-serving-config-features-overlay-secret
-    
+aws_services:
+  values:
+    postgresql:
+      enabled: true
+      region: eu-central-1
+      provider_config_ref:
+        name: default
+      infrastructure:
+        subnet_group:
+          name: "SUBNET-GROUP-NAME"
+        security_groups:
+          - id: "SECURITY-GROUP-ID"
+      instance_configuration:
+        skip_final_snapshot: true
+    mysql:
+      enabled: true
+      region: eu-central-1
+      provider_config_ref:
+        name: default
+      infrastructure:
+        subnet_group:
+          name: "SUBNET-GROUP-NAME"
+        security_groups:
+          - id: "SECURITY-GROUP-ID"
+      instance_configuration:
+        skip_final_snapshot: true
