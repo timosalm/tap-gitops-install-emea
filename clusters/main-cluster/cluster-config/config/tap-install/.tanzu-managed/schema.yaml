@@ -31,3 +31,6 @@ tap_install:
 
   #@schema/type any=True
   packages: {}
+
+#@schema/type any=True
+aws_services: {}
