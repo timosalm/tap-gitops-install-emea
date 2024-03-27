@@ -5,6 +5,8 @@ kind: PackageInstall
 metadata:
   name: educates-cluster-essentials
   namespace: educates-package
+  annotations:
+    ext.packaging.carvel.dev/ytt-paths-from-secret-name.0: educates-cluster-essentials-overlay-secret
 spec:
   packageRef:
     refName: cluster-essentials.educates.dev
