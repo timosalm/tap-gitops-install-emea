@@ -12,4 +12,4 @@ tdp_configurator:
       plugins:
         - name: '@timosalm/plugin-tech-insights-wrapper-backend'
           version: '1.0.0'
-  custom_image: harbor.main.emea.end2end.link/tap/tdp-config-tdp-configurator@sha256:7659453783c4056216f78b68d2874a7cb05d6a623aa60864d7c19cc7a7c24626
+  custom_image: harbor.main.emea.end2end.link/tap/tdp-config-tdp-configurator@sha256:e32c10b30ad0e5c5e99e4b0a16f8255c21594df8de0331617b625c4292396100
