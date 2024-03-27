@@ -4,12 +4,12 @@ tdp_configurator:
   config: |
     app:
       plugins:
-        - name: '@timosalm/plugin-tech-insights-wrapper'
-          version: '1.0.0'
+        - name: '@vmware-tanzu/tdp-plugin-techinsights-backend'
+          version: '^0.0.2'
         - name: '@timosalm/tech-radar-wrapper'
           version: '1.0.1'
     backend:
       plugins:
-        - name: '@timosalm/plugin-tech-insights-wrapper-backend'
-          version: '1.0.0'
+        - name: '@vmware-tanzu/tdp-plugin-techinsights-backend'
+          version: '^0.0.2'
   custom_image: harbor.main.emea.end2end.link/tap/tdp-config-tdp-configurator@sha256:e32c10b30ad0e5c5e99e4b0a16f8255c21594df8de0331617b625c4292396100
