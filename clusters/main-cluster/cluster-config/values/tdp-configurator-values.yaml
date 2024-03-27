@@ -6,8 +6,6 @@ tdp_configurator:
       plugins:
         - name: '@vmware-tanzu/tdp-plugin-techinsights-backend'
           version: '^0.0.2'
-        - name: '@timosalm/tech-radar-wrapper'
-          version: '1.0.1'
     backend:
       plugins:
         - name: '@vmware-tanzu/tdp-plugin-techinsights-backend'
