@@ -1,6 +1,6 @@
 tdp_configurator:
   # aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 377668981663.dkr.ecr.eu-central-1.amazonaws.com && imgpkg describe -b $(kubectl get -n tap-install $(kubectl get package -n tap-install --field-selector spec.refName=tpb.tanzu.vmware.com -o name) -o jsonpath="{.spec.template.spec.fetch[0].imgpkgBundle.image}") -o yaml --tty=true | grep -A 1 "kbld.carvel.dev/id: harbor-repo.vmware.com/esback/configurator" | grep "image: " | sed 's/\simage: //g'
-  image: 377668981663.dkr.ecr.eu-central-1.amazonaws.com/tap-images@sha256:371fed5baaa6d576490900981a0c123af4ab234af3668fee948996ec1a239447
+  image: 377668981663.dkr.ecr.eu-central-1.amazonaws.com/tap-images@sha256:acff11ba5757a690a2d8db6953cda1084f81f55d38794b06885aa4c714640d81
   config: |
     app:
       plugins:
