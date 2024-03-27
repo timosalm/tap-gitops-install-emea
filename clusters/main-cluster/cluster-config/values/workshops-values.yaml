@@ -7,7 +7,7 @@ workshops:
     tap:
       ingress_domain: main.emea.end2end.link
       ingress_wildcard_cert: tanzu-system-ingress/contour-tls-delegation-cert
-      product_docs_base_url: https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.7/tap
+      product_docs_base_url: https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.8/tap
     container_registry:
       hostname: harbor.main.emea.end2end.link
       repository: tap-workshop-examples
