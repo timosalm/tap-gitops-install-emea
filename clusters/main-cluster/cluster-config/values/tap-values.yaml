@@ -17,6 +17,7 @@ tap_install:
             memory: 2Gi
           requests:
             memory: 1Gi
+      exclude_dependencies: true
     supply_chain: testing_scanning  # Required for namespace provisioner to apply scan templates
     ootb_templates:
       iaas_auth: true

@@ -1,6 +1,7 @@
 tap_install:
   package_repository:
     oci_repository: 377668981663.dkr.ecr.eu-central-1.amazonaws.com/tap-images
+    oci_tbs_deps_repository: 377668981663.dkr.ecr.eu-central-1.amazonaws.com/full-deps-package-repo
   version:
     package_repo_bundle_tag: "1.8.1"
     package_version: "1.8.1"
