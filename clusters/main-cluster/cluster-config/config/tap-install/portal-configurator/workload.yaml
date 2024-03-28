@@ -17,6 +17,9 @@ metadata:
     apps.tanzu.vmware.com/workload-type: tdp
     app.kubernetes.io/part-of: tdp-configurator
 spec:
+  params:
+    name: clusterBuilder
+    value: full-jammy
   build:
     env:
       - name: BP_NODE_RUN_SCRIPTS
