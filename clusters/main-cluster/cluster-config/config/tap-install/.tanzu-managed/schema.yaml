@@ -23,6 +23,7 @@ tap_install:
     #@schema/examples ("TanzuNet (not recommended for production)", "registry.tanzu.vmware.com/tanzu-application-platform/tap-packages")
     #@schema/validation min_len=1
     oci_repository: ""
+    oci_tbs_deps_repository: ""
 
   #@schema/title "TAP Values (non-sensitive)"
   #@schema/desc "Non-sensitive portion of the Tanzu Application Platform configuration values."
