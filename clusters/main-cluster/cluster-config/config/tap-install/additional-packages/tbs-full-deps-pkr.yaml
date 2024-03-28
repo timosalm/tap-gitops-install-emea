@@ -8,4 +8,4 @@ metadata:
 spec:
   fetch:
     imgpkgBundle:
-      image: #@ "{}:{}".format(data.values.tap_package_repository.oci_tbs_deps_repository, data.values.tap_install.version.package_repo_bundle_tag)
+      image: #@ "{}:{}".format(data.values.tap_install.tap_package_repository.oci_tbs_deps_repository, data.values.tap_install.version.package_repo_bundle_tag)
