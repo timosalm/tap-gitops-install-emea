@@ -10,4 +10,4 @@ tdp_configurator:
       plugins:
         - name: '@vmware-tanzu/tdp-plugin-techinsights-backend'
           version: '3.0.2'
-  custom_image: harbor.main.emea.end2end.link/tap/tdp-config-tdp-configurator@sha256:4d4a37d39af29ec0d23672f6e13268dfb3f791c94e7f7a5cd478eb09d44bd823
+  # custom_image: harbor.main.emea.end2end.link/tap/tdp-config-tdp-configurator@sha256:4d4a37d39af29ec0d23672f6e13268dfb3f791c94e7f7a5cd478eb09d44bd823
