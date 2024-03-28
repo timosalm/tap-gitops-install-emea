@@ -27,6 +27,7 @@ tap_package_repository:
   #@schema/title "Repository URL"
   #@schema/desc "Fully qualified URL (including repository) where the TAP PackageRepository is hosted."
   oci_repository: ""
+  oci_tbs_deps_repository: ""
 
 #@schema/title "TAP Installation Configuration"
 #@schema/desc "Details from TAP Installation required by Tanzu Sync to ensure compatible configuration. Primarily to install Packages from the same PackageRepository used to install TAP."
