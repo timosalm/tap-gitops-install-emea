@@ -129,6 +129,7 @@ tap_install:
       - name: knative-serving-config-features-overlay-secret
 aws_services:
   values:
+    role_arn: arn:aws:iam::377668981663:role/tap-emea-crossplane
     postgresql:
       enabled: true
       region: eu-central-1
@@ -136,9 +137,9 @@ aws_services:
         name: default
       infrastructure:
         subnet_group:
-          name: "SUBNET-GROUP-NAME"
+          name: "tap-emea-main"
         security_groups:
-          - id: "SECURITY-GROUP-ID"
+          - id: "sg-06cf61fb07528fb8f"
       instance_configuration:
         skip_final_snapshot: true
     mysql:
@@ -148,8 +149,8 @@ aws_services:
         name: default
       infrastructure:
         subnet_group:
-          name: "SUBNET-GROUP-NAME"
+          name: "tap-emea-main"
         security_groups:
-          - id: "SECURITY-GROUP-ID"
+          - id: "sg-06cf61fb07528fb8f"
       instance_configuration:
         skip_final_snapshot: true
