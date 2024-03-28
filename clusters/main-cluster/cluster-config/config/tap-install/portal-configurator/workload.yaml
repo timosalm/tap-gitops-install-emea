@@ -18,7 +18,7 @@ metadata:
     app.kubernetes.io/part-of: tdp-configurator
 spec:
   params:
-    name: clusterBuilder
+  - name: clusterBuilder
     value: full-jammy
   build:
     env:
