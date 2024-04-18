@@ -80,11 +80,11 @@ tap_install:
     tekton_pipelines:
       feature_flags:
         enable_api_fields: alpha
-    cartographer: 
-      conventions:
-        resources:
+    cartographer_conventions:
+      resources:
           limits:
             memory: 1.8Gi
+    cartographer: 
       cartographer:
         concurrency: 
           max_deliveries: 25
