@@ -108,6 +108,10 @@ tap_install:
         app_limit_memory: 1Gi
     grype:
       targetImagePullSecret: registries-credentials
+    contour:
+      contour: 
+        configFileContents:
+          enableExternalNameService: true
     excluded_packages:
     - policy.apps.tanzu.vmware.com
     - workshops.learningcenter.tanzu.vmware.com
