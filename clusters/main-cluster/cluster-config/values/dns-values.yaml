@@ -1,0 +1,3 @@
+dns:   
+  hosted_zone_id: Z04147751VKC48IKUQS06
+  role: arn:aws:iam::377668981663:role/EmeaE2EDemoHostedZoneChanger
