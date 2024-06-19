@@ -4,3 +4,4 @@ tap_std:
   version:
     package_repo_bundle_tag: "v2023.7.13_update.2"
     harbor_package_version: "2.8.2+vmware.2-tkg.1"
+    externaldns_package_version: "0.13.4+vmware.2-tkg.1"
