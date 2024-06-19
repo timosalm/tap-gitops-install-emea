@@ -3,3 +3,6 @@
 ---
 #@schema/type any=True
 tap_std: {}
+
+#@schema/type any=True
+dns: {}
