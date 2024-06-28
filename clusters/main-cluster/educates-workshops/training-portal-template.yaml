@@ -30,17 +30,7 @@ spec:
         secret: #@ data.values.training_portal.robotClientSecret
     #@ end
   workshops:
-  - name: tap-spring-dev-workshop
-    capacity: 40
-    reserved: 0
-    expires: 4h
-    orphaned: 1h
   - name: going-serverless
-    capacity: 40
-    reserved: 0
-    expires: 3h
-    orphaned: 1h
-  - name: devx-platform
     capacity: 40
     reserved: 0
     expires: 3h
